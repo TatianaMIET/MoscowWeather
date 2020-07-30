@@ -1,0 +1,12 @@
+../packages
+
+../MoscowWeather/obj
+
+../MoscowWeather/bin
+
+*.csproj.user
+
+*.sln
+
+Web.Debug.config
+Web.Release.config

@@ -1,8 +1,8 @@
-packages\
+packages/
 
-MoscowWeather\obj\
+MoscowWeather/obj/
 
-..\MoscowWeather\bin\
+/MoscowWeather/bin/
 
 *.csproj.user
 

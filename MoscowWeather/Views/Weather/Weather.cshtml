@@ -1,0 +1,32 @@
+﻿@model IEnumerable<DataLayer.Entity.Weather>
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Weather</title>
+
+</head>
+<body>
+    <div>
+
+        @foreach (var item in Model)
+        {
+            <h4>@item.Id </h4>
+            <h4>@item.CloudBase </h4>
+            <h4>@item.CloudBase </h4>
+            <h4>@item.Cloudiness </h4>
+            <h4>@item.Date.ToString() </h4>
+            <h4>@item.DewPoint </h4>
+            <h4>@item.HorizontalVisibility </h4>
+            <h4>@item.Humidity </h4>
+            <h4>@item.Pressure </h4>
+            <h4>@item.Temperature </h4>
+            <h4>@item.WeatherPhenomena </h4>
+            <h4>@item.WindDirection </h4>
+            <h4>@item.WindSpeed </h4>
+
+        }
+    </div>
+</body>
+</html>

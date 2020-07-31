@@ -1,8 +1,9 @@
-packages/
+/packages/
 
-MoscowWeather/obj/
+/**/obj/
+/**/bin/
 
-/MoscowWeather/bin/
+.vs/
 
 *.csproj.user
 
@@ -10,3 +11,4 @@ MoscowWeather/obj/
 
 Web.Debug.config
 Web.Release.config
+

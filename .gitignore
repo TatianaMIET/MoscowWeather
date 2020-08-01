@@ -1,6 +1,7 @@
 packages/
 
-/Scripts/*.js
+/**/Scripts/*.js
+/**/Scripts/*.min.map
 
 /**/obj/
 /**/bin/

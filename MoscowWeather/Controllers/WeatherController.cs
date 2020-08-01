@@ -1,10 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Web;
 using System.Web.Mvc;
 using DataLayer.DBConnection;
 using DataLayer.Entity;
 using DataLayer.Services;
+using NLog;
 
 namespace MoscowWeather.Controllers
 {
@@ -16,22 +19,6 @@ namespace MoscowWeather.Controllers
         // GET: Weathers
         public ActionResult Index()
         {
-            db.WeatherData.Add(
-                new Weather
-                {
-                    CloudBase = 1,
-                    Cloudiness = 1,
-                    Date = DateTime.Now,
-                    DewPoint = 1.0M,
-                    HorizontalVisibility = 100,
-                    Humidity = 100,
-                    WindSpeed = 10,
-                    Pressure = 1,
-                    WindDirection = "a",
-                    Temperature = -1.1M,
-                    WeatherPhenomena = "a"
-                });
-            db.SaveChanges();
             return View("Weather", db.WeatherData.ToList());
         }
 
@@ -42,12 +29,12 @@ namespace MoscowWeather.Controllers
         }
 
         [HttpPost]
-        public ActionResult DownloadWeatherArchives([Bind(Include = "archives")] object archives)
+        public ActionResult DownloadWeatherArchives(List<HttpPostedFileBase> archives)
         {
             int i = 0;
-            return View("Weather");
+            return RedirectToAction("Index");
 
-        }
+        } 
 
 
         protected override void Dispose(bool disposing)
@@ -59,5 +46,6 @@ namespace MoscowWeather.Controllers
             base.Dispose(disposing);
         }
 
+        private static readonly Logger logger = LogManager.GetCurrentClassLogger();
     }
 }

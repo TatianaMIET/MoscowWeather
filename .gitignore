@@ -1,4 +1,6 @@
-/packages/
+packages/
+
+/Scripts/*.js
 
 /**/obj/
 /**/bin/
@@ -11,4 +13,3 @@
 
 Web.Debug.config
 Web.Release.config
-

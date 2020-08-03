@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using AutoMapper;
 using DataLayer.DBConnection;
 using DataLayer.Entity;
 using DataLayer.Services;
@@ -15,6 +16,7 @@ namespace MoscowWeather.Controllers
     {
         private readonly WeatherDBContext db = new WeatherDBContext();
         private readonly WeatherService weatherService = new WeatherService();
+        private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
         // GET: Weathers
         public ActionResult Index()
@@ -31,7 +33,8 @@ namespace MoscowWeather.Controllers
         [HttpPost]
         public ActionResult DownloadWeatherArchives(List<HttpPostedFileBase> archives)
         {
-            int i = 0;
+           
+            weatherService.ReadExelArchives(archives);
             return RedirectToAction("Index");
 
         } 
@@ -46,6 +49,10 @@ namespace MoscowWeather.Controllers
             base.Dispose(disposing);
         }
 
-        private static readonly Logger logger = LogManager.GetCurrentClassLogger();
+        #region Данные
+        private readonly IMappingEngine mapping;
+
+        private ISettings settings;
+        #endregion
     }
 }

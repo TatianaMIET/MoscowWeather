@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace DataLayer.Entity
 {
-
+    /// <summary>
+    /// Сущность погода.
+    /// </summary>
     public class Weather
     {
         public int Id { get; set; }

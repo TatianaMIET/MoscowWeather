@@ -17,7 +17,7 @@ namespace DataLayer.Entity
 
         public decimal Temperature { get; set; }
 
-        public short Humidity { get; set; }
+        public decimal Humidity { get; set; }
 
         public decimal DewPoint { get; set; }
 
@@ -25,13 +25,13 @@ namespace DataLayer.Entity
 
         public string WindDirection { get; set; }
 
-        public short WindSpeed {get; set;}
+        public short? WindSpeed {get; set;}
 
         public short? Cloudiness { get; set; }
 
         public short CloudBase { get; set; }
 
-        public short HorizontalVisibility { get; set; }
+        public short? HorizontalVisibility { get; set; }
 
         public string WeatherPhenomena { get; set; }
     }

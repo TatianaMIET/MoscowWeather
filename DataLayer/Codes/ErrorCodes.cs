@@ -9,6 +9,10 @@ namespace DataLayer.Codes
     public sealed class ErrorCodes
     {
         public static int SUCCESS { get; } = 0;
-        public static int INCORRECT_DOCUMENT { get; } = 1;
+
+        public static int INCORRECT_HEADER { get; } = 1;
+
+        public static int PARSE_ERROR { get; } = 2;
     }
 }
+

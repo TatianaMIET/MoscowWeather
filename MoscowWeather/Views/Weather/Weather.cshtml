@@ -1,4 +1,4 @@
-﻿@model IEnumerable<DataLayer.Entity.Weather>
+﻿@model MoscowWeather.Models.WeatherVM
 <!DOCTYPE html>
 
 <html>
@@ -9,24 +9,112 @@
 </head>
 <body>
     <div>
-
-        @foreach (var item in Model)
+        @using (Html.BeginForm("GetWeatherData", "Weather", FormMethod.Get, new { @class = "form-horizontal", id = "filter-date", role = "form" }))
         {
-            <h4>@item.Id </h4>
-            <h4>@item.CloudBase </h4>
-            <h4>@item.CloudBase </h4>
-            <h4>@item.Cloudiness </h4>
-            <h4>@item.Date.ToString() </h4>
-            <h4>@item.DewPoint </h4>
-            <h4>@item.HorizontalVisibility </h4>
-            <h4>@item.Humidity </h4>
-            <h4>@item.Pressure </h4>
-            <h4>@item.Temperature </h4>
-            <h4>@item.WeatherPhenomena </h4>
-            <h4>@item.WindDirection </h4>
-            <h4>@item.WindSpeed </h4>
-
+            <div class="row pt-2 pl-5 pr-5 pb-4">
+                <div class="col-lg-5">
+                    <input type="text" id="month" class="form-control pt-1" name="month" placeholder="Месяц" value="@Model.DateViewModel.Month">
+                </div>
+                <div class="col-lg-5">
+                    <input type="text" id="year" class="form-control pt-1" name="year" placeholder="Год" value="@Model.DateViewModel.Year">
+                </div>
+                <div class="col-lg-2">
+                    <input class="btn pt-1 btn-outline-dark" type="submit" value="Фильтровать" />
+                </div>
+            </div>
         }
+
+        <div class="row pt-3">
+            <div class="col-12">
+                <table class="table table-sm table-striped ">
+                    <thead>
+                        <tr>
+
+                            <td>
+                                <label for="CloudBase">Граница облачности</label>
+                            </td>
+                            <td>
+                                <label for="Cloudiness">Облачность</label>
+                            </td>
+                            <td>
+                                <label for="Date">Дата</label>
+                            </td>
+                            <td>
+                                <label for="DewPoint">Точка росы</label>
+                            </td>
+                            <td>
+                                <label for="HorizontalVisibility">Горизонтальная видимость</label>
+                            </td>
+                            <td>
+                                <label for="Humidity">Относительная влажность</label>
+                            </td>
+                            <td>
+                                <label for="Pressure">Атм. давление</label>
+                            </td>
+                            <td>
+                                <label for="Temperature">Температура</label>
+                            </td>
+                            <td>
+                                <label for="WeatherPhenomena">Погодные явления</label>
+                            </td>
+                            <td>
+                                <label for="WindDirection">Направление ветра</label>
+                            </td>
+                            <td>
+                                <label for="WindSpeed">Скорость ветра</label>
+                            </td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.WeatherData)
+                        {
+                            <tr>
+
+                                <td>@item.CloudBase</td>
+
+                                <td>@item.Cloudiness</td>
+
+                                <td>@item.Date.ToString()</td>
+
+                                <td>@item.DewPoint </td>
+
+                                <td>@item.HorizontalVisibility</td>
+
+                                <td>@item.Humidity</td>
+
+                                <td>@item.Pressure</td>
+
+                                <td>@item.Temperature </td>
+
+                                <td>@item.WeatherPhenomena</td>
+
+                                <td>@item.WindDirection</td>
+
+                                <td>@item.WindSpeed</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                @if (Model.PageViewModel.HasPreviousPage)
+                {
+                    @Html.ActionLink("Назад", "GetWeatherData", "Weather",
+                   new { year = Model.DateViewModel.Year, month = Model.DateViewModel.Month, page = (Model.PageViewModel.PageNumber - 1) },
+                   new { @class = "btn btn-outline-dark" })
+
+                }
+                @if (Model.PageViewModel.HasNextPage)
+                {
+                    @Html.ActionLink("Вперед", "GetWeatherData", "Weather",
+               new { year = Model.DateViewModel.Year, month = Model.DateViewModel.Month, page = (Model.PageViewModel.PageNumber + 1) },
+               new { @class = "btn btn-outline-dark" })
+                }
+            </div>
+        </div>
+
     </div>
 </body>
 </html>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/validate-filter")
+}

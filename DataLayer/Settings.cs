@@ -1,35 +1,32 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Configuration;
+﻿using System.Collections.Generic;
+using System.Configuration;
 
 namespace DataLayer
 {
     public sealed class Settings
     {
-        public static string DATE { get; } = WebConfigurationManager.AppSettings["Date"];
+        public static string DATE { get; } = ConfigurationManager.AppSettings["Date"];
 
-        public static string TIME { get; } = WebConfigurationManager.AppSettings["Time"];
+        public static string TIME { get; } = ConfigurationManager.AppSettings["Time"];
 
-        public static string TEMPERATURE { get; } = WebConfigurationManager.AppSettings["Temperature"];
+        public static string TEMPERATURE { get; } = ConfigurationManager.AppSettings["Temperature"];
 
-        public static string HUMIDITY { get; } = WebConfigurationManager.AppSettings["Humidity"];
+        public static string HUMIDITY { get; } = ConfigurationManager.AppSettings["Humidity"];
 
-        public static string DEW_POINT { get; } = WebConfigurationManager.AppSettings["DewPoint"];
+        public static string DEW_POINT { get; } = ConfigurationManager.AppSettings["DewPoint"];
 
-        public static string PRESSURE { get; } = WebConfigurationManager.AppSettings["Pressure"];
+        public static string PRESSURE { get; } = ConfigurationManager.AppSettings["Pressure"];
 
-        public static string WIND_DIRECTION { get; } = WebConfigurationManager.AppSettings["WindDirection"];
+        public static string WIND_DIRECTION { get; } = ConfigurationManager.AppSettings["WindDirection"];
 
-        public static string WIND_SPEED { get; } = WebConfigurationManager.AppSettings["WindSpeed"];
+        public static string WIND_SPEED { get; } = ConfigurationManager.AppSettings["WindSpeed"];
 
-        public static string CLOUDINESS { get; } = WebConfigurationManager.AppSettings["Cloudiness"];
+        public static string CLOUDINESS { get; } = ConfigurationManager.AppSettings["Cloudiness"];
 
-        public static string CLOUD_BASE { get; } = WebConfigurationManager.AppSettings["CloudBase"];
+        public static string CLOUD_BASE { get; } = ConfigurationManager.AppSettings["CloudBase"];
 
-        public static string HORIZONTAL_VISIBILITY { get; } = WebConfigurationManager.AppSettings["HorizontalVisibility"];
+        public static string HORIZONTAL_VISIBILITY { get; } = ConfigurationManager.AppSettings["HorizontalVisibility"];
 
-        public static string WEATHER_PHENOMENA { get; } = WebConfigurationManager.AppSettings["WeatherPhenomena"];
+        public static string WEATHER_PHENOMENA { get; } = ConfigurationManager.AppSettings["WeatherPhenomena"];
     }
 }

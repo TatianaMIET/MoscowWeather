@@ -2,9 +2,23 @@ packages/
 
 /**/Scripts/*.js
 /**/Scripts/*.min.map
+/**/Scripts/*.min.js.map
+/**/Scripts/*.js.map
+/**/Scripts/*.md
+/**/Scripts/*.js.flow
+/**/Scripts/*.d.ts
+
+
+/**/Scripts/umd/
+/**/Scripts/src/
+/**/Scripts/esm/
 
 /**/obj/
 /**/bin/
+
+/**/Migrations/
+/**/Content/
+/**/fonts/
 
 .vs/
 

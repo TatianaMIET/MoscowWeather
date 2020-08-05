@@ -19,6 +19,8 @@ packages/
 /**/Migrations/
 /**/Content/
 /**/fonts/
+/**/logs/
+
 
 .vs/
 

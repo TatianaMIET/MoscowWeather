@@ -6,6 +6,11 @@ using System.Web;
 
 namespace MoscowWeather.Models
 {
+    /// <summary>
+    /// Класс WeatherVM
+    /// общая модель для отображения данных с учетом
+    /// пагинации и фильтрации
+    /// </summary>
     public class WeatherVM
     {
         public List<WeatherModel> WeatherData { get; set; }

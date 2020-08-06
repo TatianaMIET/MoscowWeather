@@ -6,6 +6,11 @@ using System.Threading.Tasks;
 
 namespace DataLayer.Codes
 {
+    /// <summary>
+    ///  Класс ErrorTextTemplates
+    ///  константы текста для вывода сообщений
+    ///  о ошибках при выполнении парсинга Exel архивов
+    /// </summary>
     public class ErrorTextTemplates
     {
         public static string SUCCESS { get; } = "Документ {0} успешно загружен! ";

@@ -5,6 +5,10 @@ using System.Web;
 
 namespace MoscowWeather.Models
 {
+    /// <summary>
+    /// Класс WeatherModel
+    /// модель для отображения данных сущности Weather
+    /// </summary>
     public class WeatherModel
     {
         public int Id { get; set; }

@@ -6,6 +6,12 @@ using System.Threading.Tasks;
 
 namespace DataLayer.Model
 {
+    /// <summary>
+    ///  Класс PageModel
+    ///  модель для пагинации
+    ///  при отображении данных
+    /// </summary>
+    /// 
     public class PageModel
     {
         public int PageNumber { get; private set; }

@@ -6,6 +6,13 @@ using System.Threading.Tasks;
 
 namespace DataLayer.Codes
 {
+
+    /// <summary>
+    ///  Класс ErrorCodes
+    ///  константы для опознавания типа ошибки
+    ///  при выполнении парсинга Exel архивов
+    /// </summary>
+
     public sealed class ErrorCodes
     {
         public static int SUCCESS { get; } = 0;

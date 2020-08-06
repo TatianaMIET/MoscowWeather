@@ -15,6 +15,11 @@ using NLog;
 
 namespace MoscowWeather.Controllers
 {
+    /// <summary>
+    /// Класс WeatherController
+    /// контроллер, принимающий и обрабатывающий 
+    /// входящие запросы пользователей
+    /// </summary>
     public class WeatherController : Controller
     {
         private readonly WeatherService weatherService = new WeatherService();

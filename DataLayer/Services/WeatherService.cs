@@ -10,6 +10,12 @@ using System.Web;
 
 namespace DataLayer.Services
 {
+    /// <summary>
+    ///  Класс WeatherService
+    ///  сервис для реализации логики
+    ///  при обработке входящих запросов от
+    ///  контроллера WeatherController
+    /// </summary>
     public class WeatherService : IDisposable
     {
         private readonly WeatherDBContext db;

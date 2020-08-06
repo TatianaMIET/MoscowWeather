@@ -5,13 +5,17 @@ using NPOI.SS.UserModel;
 using NPOI.XSSF.UserModel;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Web;
+using System.Web.Configuration;
 
 namespace DataLayer.Services
 {
+    /// <summary>
+    ///  Класс ExelParseService
+    ///  сервис для 
+    ///  выполнении парсинга Exel архивов
+    /// </summary>
     public class ExelParseService
     {
 
@@ -53,9 +57,9 @@ namespace DataLayer.Services
 
         private bool HeaderCheck(ISheet sheet)
         {
-            //TODO: вынести значения строк с заголовком в конфиг
-            IRow firstHeadingRow = sheet.GetRow(2);
-            IRow secondHeadingRow = sheet.GetRow(3);
+            int firstHeaderRowNum = int.Parse(WebConfigurationManager.AppSettings["FirstHeaderRowNum"]);
+            IRow firstHeadingRow = sheet.GetRow(firstHeaderRowNum);
+            IRow secondHeadingRow = sheet.GetRow(++firstHeaderRowNum);
 
             if (firstHeadingRow.LastCellNum == secondHeadingRow.LastCellNum)
             {
@@ -144,8 +148,8 @@ namespace DataLayer.Services
             logger.Info("TRY PARSE SHEET {0}", sheet.SheetName);
             bool allDataIsCorrect = true;
 
-            //TODO: вынести 5 в конфиг
-            for (int row = 5; row < sheet.LastRowNum; row++)
+            int firstDataRowNum = int.Parse(WebConfigurationManager.AppSettings["FirstDataRowNum"]);
+            for (int row = firstDataRowNum; row < sheet.LastRowNum; row++)
             {
                 IRow currentRow = sheet.GetRow(row);
                 Weather weather = new Weather();
@@ -156,7 +160,6 @@ namespace DataLayer.Services
                     logger.Info("TRY PARSE ROW {0}" + row);
                     bool tryParse = true; int cellNum = 0;
 
-                    //TODO: пересмотреть 
                     decimal dec = 0M;
                     short sh = 0;
                     short? shNull = null;
@@ -308,20 +311,6 @@ namespace DataLayer.Services
                     logger.Error("Can't parse cell № {0}", currentCell.Address);
                     return false;
                 }
-            }
-        }
-
-        private bool ParseStringTypeCell(ICell currentCell, StringBuilder item)
-        {
-            if (currentCell == null)
-            {
-                logger.Error("Can't parse cell № " + currentCell.Address);
-                return false;
-            }
-            else
-            {
-                item.Append(currentCell.ToString());
-                return true;
             }
         }
 

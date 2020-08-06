@@ -5,6 +5,12 @@ using System.Web;
 
 namespace MoscowWeather.Models
 {
+
+    /// <summary>
+    /// Класс PageVM
+    /// модель для реализации отображения
+    /// с помощью пагинации
+    /// </summary>
     public class PageVM
     {
         public int PageNumber { get; private set; }

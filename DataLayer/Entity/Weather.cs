@@ -7,7 +7,8 @@ using System.Threading.Tasks;
 namespace DataLayer.Entity
 {
     /// <summary>
-    /// Сущность погода.
+    /// Сущность погода для занесения данных
+    /// из архивов в БД
     /// </summary>
     public class Weather
     {

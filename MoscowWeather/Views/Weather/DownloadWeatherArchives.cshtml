@@ -1,19 +1,15 @@
-﻿<!DOCTYPE html>
+﻿
 
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>DownloadWeatherArchives</title>
-</head>
-<body>
-    <div>
-        <form enctype="multipart/form-data" method="post">
-            <p>Загрузите один или несколько архивов с данными</p>
-            <p>
-                <input type="file" name="archives" multiple accept="application/x-exel">
-                <input type="submit" value="Загрузить">
-            </p>
-        </form>
-    </div>
-</body>
-</html>
+<div>
+    <form enctype="multipart/form-data" id="file" method="post">
+        <p>Загрузите один или несколько архивов с данными</p>
+        <p>
+            <input type="file" name="archives" multiple accept="application/x-exel">
+            <input type="submit" value="Загрузить">
+        </p>
+    </form>
+</div>
+@section Scripts {
+    @Scripts.Render("~/bundles/validate-filter")
+}
+

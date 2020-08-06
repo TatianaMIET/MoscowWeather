@@ -29,39 +29,38 @@
                 <table class="table table-sm table-striped ">
                     <thead>
                         <tr>
-
-                            <td>
-                                <label for="CloudBase">Граница облачности</label>
-                            </td>
-                            <td>
-                                <label for="Cloudiness">Облачность</label>
-                            </td>
                             <td>
                                 <label for="Date">Дата</label>
-                            </td>
-                            <td>
-                                <label for="DewPoint">Точка росы</label>
-                            </td>
-                            <td>
-                                <label for="HorizontalVisibility">Горизонтальная видимость</label>
-                            </td>
-                            <td>
-                                <label for="Humidity">Относительная влажность</label>
-                            </td>
-                            <td>
-                                <label for="Pressure">Атм. давление</label>
                             </td>
                             <td>
                                 <label for="Temperature">Температура</label>
                             </td>
                             <td>
-                                <label for="WeatherPhenomena">Погодные явления</label>
+                                <label for="Humidity">Относительная влажность</label>
+                            </td>
+                            <td>
+                                <label for="DewPoint">Точка росы</label>
+                            </td>
+                            <td>
+                                <label for="Pressure">Атм. давление</label>
                             </td>
                             <td>
                                 <label for="WindDirection">Направление ветра</label>
                             </td>
                             <td>
                                 <label for="WindSpeed">Скорость ветра</label>
+                            </td>
+                            <td>
+                                <label for="Cloudiness">Облачность</label>
+                            </td>
+                            <td>
+                                <label for="CloudBase">Граница облачности</label>
+                            </td>
+                            <td>
+                                <label for="HorizontalVisibility">Горизонтальная видимость</label>
+                            </td>
+                            <td>
+                                <label for="WeatherPhenomena">Погодные явления</label>
                             </td>
                         </tr>
                     </thead>
@@ -95,20 +94,28 @@
                         }
                     </tbody>
                 </table>
-                @if (Model.PageViewModel.HasPreviousPage)
-                {
-                    @Html.ActionLink("Назад", "GetWeatherData", "Weather",
-                   new { year = Model.DateViewModel.Year, month = Model.DateViewModel.Month, page = (Model.PageViewModel.PageNumber - 1) },
-                   new { @class = "btn btn-outline-dark" })
+                <div class="row">
+                    <div class="col-6">
+                        @if (Model.PageViewModel.HasPreviousPage)
+                        {
+                            @Html.ActionLink("Назад", "GetWeatherData", "Weather",
+                           new { year = Model.DateViewModel.Year, month = Model.DateViewModel.Month, page = (Model.PageViewModel.PageNumber - 1) },
+                           new { @class = "btn btn-outline-dark" })
 
-                }
-                @if (Model.PageViewModel.HasNextPage)
-                {
-                    @Html.ActionLink("Вперед", "GetWeatherData", "Weather",
-               new { year = Model.DateViewModel.Year, month = Model.DateViewModel.Month, page = (Model.PageViewModel.PageNumber + 1) },
-               new { @class = "btn btn-outline-dark" })
-                }
-            </div>
+                        }
+                        @if (Model.PageViewModel.HasNextPage)
+                        {
+                            @Html.ActionLink("Вперед", "GetWeatherData", "Weather",
+                       new { year = Model.DateViewModel.Year, month = Model.DateViewModel.Month, page = (Model.PageViewModel.PageNumber + 1) },
+                       new { @class = "btn btn-outline-dark" })
+                        }
+                    </div>
+                    <div class="col-5 ml-auto">
+                        @Html.ActionLink("Перейти на главную", "Index", "Weather",
+                       new { @class = "btn btn-outline-dark offset-7" })
+                    </div>
+                    </div>
+                </div>
         </div>
 
     </div>

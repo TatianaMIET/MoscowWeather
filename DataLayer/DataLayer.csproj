@@ -103,6 +103,10 @@
     <Compile Include="Migrations\202008041642190_WeatherUpdate.designer.cs">
       <DependentUpon>202008041642190_WeatherUpdate.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202008060846537_CloudBaseNullable.cs" />
+    <Compile Include="Migrations\202008060846537_CloudBaseNullable.designer.cs">
+      <DependentUpon>202008060846537_CloudBaseNullable.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\PageModel.cs" />
     <Compile Include="Model\WeatherModel.cs" />
@@ -130,6 +134,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202008041642190_WeatherUpdate.resx">
       <DependentUpon>202008041642190_WeatherUpdate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202008060846537_CloudBaseNullable.resx">
+      <DependentUpon>202008060846537_CloudBaseNullable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

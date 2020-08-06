@@ -29,7 +29,7 @@ namespace DataLayer.Entity
 
         public short? Cloudiness { get; set; }
 
-        public short CloudBase { get; set; }
+        public short? CloudBase { get; set; }
 
         public short? HorizontalVisibility { get; set; }
 

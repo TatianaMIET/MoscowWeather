@@ -26,28 +26,35 @@ namespace DataLayer.Services
             List<string> result = new List<string>();
             foreach (var archive in archives)
             {
-                Dictionary<string, object> archiveWeatherData = exelParseService.ReadExelArchive(archive);
-
-                if (archiveWeatherData.ContainsKey("result"))
+                if (archive.ContentType == "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
                 {
-                    if (archiveWeatherData["result"] != null)
+                    Dictionary<string, object> archiveWeatherData = exelParseService.ReadExelArchive(archive);
+
+                    if (archiveWeatherData.ContainsKey("result"))
                     {
-                        db.WeatherData.AddRange((List<Weather>)archiveWeatherData["result"]);
-                        db.SaveChangesAsync();
+                        if (archiveWeatherData["result"] != null)
+                        {
+                            db.WeatherData.AddRange((List<Weather>)archiveWeatherData["result"]);
+                            db.SaveChangesAsync();
+                        }
+                    }
+
+                    if (archiveWeatherData.ContainsKey("header_error"))
+                    {
+                        result.Add(string.Format(ErrorTextTemplates.INCORRECT_HEADER, archive.FileName));
+                    }
+                    if (archiveWeatherData.ContainsKey("parse_error"))
+                    {
+                        result.Add(string.Format(ErrorTextTemplates.PARSE_ERROR, archive.FileName));
+                    }
+                    if (!(archiveWeatherData.ContainsKey("parse_error") || archiveWeatherData.ContainsKey("header_error")))
+                    {
+                        result.Add(string.Format(ErrorTextTemplates.SUCCESS, archive.FileName));
                     }
                 }
-
-                if (archiveWeatherData.ContainsKey("header_error"))
+                else
                 {
-                    result.Add(string.Format(ErrorTextTemplates.INCORRECT_HEADER, archive.FileName));
-                }
-                if (archiveWeatherData.ContainsKey("parse_error"))
-                {
-                    result.Add(string.Format(ErrorTextTemplates.PARSE_ERROR, archive.FileName));
-                }
-                if (!(archiveWeatherData.ContainsKey("parse_error") || archiveWeatherData.ContainsKey("header_error")))
-                {
-                    result.Add(string.Format(ErrorTextTemplates.SUCCESS, archive.FileName));
+                    result.Add(string.Format(ErrorTextTemplates.FILE_TYPE_ERROR, archive.FileName));
                 }
             }
             return result;

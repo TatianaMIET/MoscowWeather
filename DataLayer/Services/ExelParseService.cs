@@ -200,8 +200,8 @@ namespace DataLayer.Services
                                 weather.Cloudiness = shNull;
                                 break;
                             case 9:
-                                tryParse = ParseShortTypeCell(currentRow.GetCell(cellNum), ref sh);
-                                weather.CloudBase = sh;
+                                tryParse = ParseShortNullableTypeCell(currentRow.GetCell(cellNum), ref shNull);
+                                weather.CloudBase = shNull;
                                 break;
                             case 10:
                                 tryParse = ParseShortNullableTypeCell(currentRow.GetCell(cellNum), ref shNull);

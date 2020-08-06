@@ -20,6 +20,11 @@ namespace MoscowWeather.Controllers
         private readonly WeatherService weatherService = new WeatherService();
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
+        public ActionResult Index()
+        {
+            return View();
+        }
+
         // GET: Weathers
         public ActionResult GetWeatherData(int? year, int? month, int page=1)
         {
@@ -67,7 +72,7 @@ namespace MoscowWeather.Controllers
             List<string> result = weatherService.ReadExelArchives(archives);
             model.ErrorMessages = result;
 
-            return PartialView("_DownloadResults", model);
+            return View("DownloadResults", model);
 
         }
 

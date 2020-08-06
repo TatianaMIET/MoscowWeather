@@ -13,5 +13,7 @@ namespace DataLayer.Codes
         public static string INCORRECT_HEADER { get; } = "Не все листы в документе {0} были успешно загружены ";
 
         public static string PARSE_ERROR { get; } = "Данные документа {0} были считаны не полностью ";
+
+        public static string FILE_TYPE_ERROR { get; } = "Некорректный тип документа {0} ";
     }
 }

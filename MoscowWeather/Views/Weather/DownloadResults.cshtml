@@ -1,0 +1,19 @@
+﻿@model MoscowWeather.Models.ErrorMessagesModel
+
+<div class="container">
+    <div>
+        <h3>Загрузка документов завершена</h3>
+        <ul>
+            @foreach (var c in Model.ErrorMessages)
+            {
+                <li>
+                    @c
+                </li>
+            }
+        </ul>
+    </div>
+    <div class="row">
+        @Html.ActionLink("Перейти на главную", "Index", "Weather", new { @class = "btn btn-outline-dark offset-6" })
+    </div>
+</div>
+

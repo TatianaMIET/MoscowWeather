@@ -34,28 +34,24 @@ namespace DataLayer.Services
             {
                 if (archive.ContentType == "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
                 {
-                    Dictionary<string, object> archiveWeatherData = exelParseService.ReadExelArchive(archive);
+                    ExelParseResultModel archiveWeatherData = exelParseService.ReadExelArchive(archive);
 
-                    if (archiveWeatherData.ContainsKey("result"))
+                    if (archiveWeatherData.WeatherData.Count != 0)
                     {
-                        if (archiveWeatherData["result"] != null)
-                        {
-                            db.WeatherData.AddRange((List<Weather>)archiveWeatherData["result"]);
-                            db.SaveChangesAsync();
-                        }
+                        db.WeatherData.AddRange(archiveWeatherData.WeatherData);
+                        db.SaveChangesAsync();
                     }
 
-                    if (archiveWeatherData.ContainsKey("header_error"))
-                    {
-                        result.Add(string.Format(ErrorTextTemplates.INCORRECT_HEADER, archive.FileName));
-                    }
-                    if (archiveWeatherData.ContainsKey("parse_error"))
-                    {
-                        result.Add(string.Format(ErrorTextTemplates.PARSE_ERROR, archive.FileName));
-                    }
-                    if (!(archiveWeatherData.ContainsKey("parse_error") || archiveWeatherData.ContainsKey("header_error")))
+                    if (archiveWeatherData.ErrorMessages.Count == 0)
                     {
                         result.Add(string.Format(ErrorTextTemplates.SUCCESS, archive.FileName));
+                    }
+                    else
+                    {
+                        foreach (var error in archiveWeatherData.ErrorMessages)
+                        {
+                            result.Add(error);
+                        }
                     }
                 }
                 else
@@ -66,13 +62,14 @@ namespace DataLayer.Services
             return result;
         }
 
-        public  WeatherModel GetWeatherData(int? yearFilter, int? monthFilter, int page, int pageSize)
+        public WeatherModel GetWeatherData(int? yearFilter, int? monthFilter, int page, int pageSize)
         {
             IQueryable<Weather> source = db.WeatherData.OrderBy(p => p.Date);
-            var count = source.CountAsync();
-            PageModel pageModel = new PageModel(count.Result, page, pageSize);
+
             if (yearFilter == null && monthFilter == null)
             {
+                int count = source.Count();
+                PageModel pageModel = new PageModel(count, page, pageSize);
                 return new WeatherModel
                 {
                     PageModel = pageModel,
@@ -80,13 +77,15 @@ namespace DataLayer.Services
                 };
 
             }
-            else
+            else 
             {
+                int count = source.Count(w => w.Date.Year == yearFilter && (monthFilter == null? w.Date.Month >= 1 : w.Date.Month == monthFilter));
+                PageModel pageModel = new PageModel(count, page, pageSize);
                 return new WeatherModel
                 {
                     PageModel = pageModel,
                     WeatherData = source.
-                    Where(w => w.Date.Year == yearFilter && w.Date.Month == (monthFilter ?? 1)).
+                    Where(w => w.Date.Year == yearFilter && (monthFilter == null ? w.Date.Month >= 1 : w.Date.Month == monthFilter)).
                     Skip((page - 1) * pageSize).Take(pageSize).ToList()
                 };
             }
@@ -94,7 +93,7 @@ namespace DataLayer.Services
 
         public void Dispose()
         {
-            db?.Dispose();
+            db.Dispose();
         }
     }
 }

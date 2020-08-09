@@ -14,8 +14,8 @@ namespace DataLayer.Model
     /// 
     public class PageModel
     {
-        public int PageNumber { get; private set; }
-        public int TotalPages { get; private set; }
+        public int PageNumber { get; }
+        public int TotalPages { get; }
 
         public PageModel(int count, int pageNumber, int pageSize)
         {

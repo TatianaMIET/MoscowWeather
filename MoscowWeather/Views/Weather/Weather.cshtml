@@ -74,28 +74,17 @@
                         @foreach (var item in Model.WeatherData)
                         {
                             <tr>
-
-                                <td>@item.CloudBase</td>
-
-                                <td>@item.Cloudiness</td>
-
                                 <td>@item.Date.ToString()</td>
-
-                                <td>@item.DewPoint </td>
-
-                                <td>@item.HorizontalVisibility</td>
-
-                                <td>@item.Humidity</td>
-
-                                <td>@item.Pressure</td>
-
                                 <td>@item.Temperature </td>
-
-                                <td>@item.WeatherPhenomena</td>
-
+                                <td>@item.Humidity</td>
+                                <td>@item.DewPoint </td>
+                                <td>@item.Pressure</td>
                                 <td>@item.WindDirection</td>
-
                                 <td>@item.WindSpeed</td>
+                                <td>@item.Cloudiness</td>
+                                <td>@item.CloudBase</td>
+                                <td>@item.HorizontalVisibility</td>
+                                <td>@item.WeatherPhenomena</td>
                             </tr>
                         }
                     </tbody>
@@ -120,8 +109,8 @@
                         @Html.ActionLink("Перейти на главную", "Index", "Weather",
                        new { @class = "btn btn-outline-dark offset-7" })
                     </div>
-                    </div>
                 </div>
+            </div>
         </div>
 
     </div>

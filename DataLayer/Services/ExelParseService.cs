@@ -1,5 +1,6 @@
 ﻿using DataLayer.Codes;
 using DataLayer.Entity;
+using DataLayer.Model;
 using NLog;
 using NPOI.SS.UserModel;
 using NPOI.XSSF.UserModel;
@@ -18,14 +19,13 @@ namespace DataLayer.Services
     /// </summary>
     public class ExelParseService
     {
-
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
-
-        public Dictionary<string, object> ReadExelArchive(HttpPostedFileBase archive)
+        public ExelParseResultModel ReadExelArchive(HttpPostedFileBase archive)
         {
             logger.Info("TRY PARSE  {0}", archive.FileName);
-            Dictionary<string, object> result = new Dictionary<string, object>();
+
+            ExelParseResultModel result = new ExelParseResultModel();
             List<Weather> weatherData = new List<Weather>();
 
             XSSFWorkbook xssfwb = new XSSFWorkbook(archive.InputStream);
@@ -38,7 +38,7 @@ namespace DataLayer.Services
                 if (!HeaderCheck(sheet))
                 {
                     logger.Error("Can't read sheet {0}", sheet.SheetName);
-                    result.Add("header_error", ErrorCodes.INCORRECT_HEADER);
+                    result.ErrorMessages.Add(string.Format(ErrorTextTemplates.INCORRECT_HEADER, archive.FileName));
                     break;
                 }
 
@@ -49,14 +49,15 @@ namespace DataLayer.Services
             }
             if (!allDataIsCorrect)
             {
-                result.Add("parse_error", ErrorCodes.PARSE_ERROR);
+                result.ErrorMessages.Add(string.Format(ErrorTextTemplates.PARSE_ERROR, archive.FileName));
             }
-            result.Add("result", weatherData);
+            result.WeatherData = weatherData;
             return result;
         }
 
         private bool HeaderCheck(ISheet sheet)
         {
+            Settings settings = new Settings();
             int firstHeaderRowNum = int.Parse(WebConfigurationManager.AppSettings["FirstHeaderRowNum"]);
             IRow firstHeadingRow = sheet.GetRow(firstHeaderRowNum);
             IRow secondHeadingRow = sheet.GetRow(++firstHeaderRowNum);
@@ -75,70 +76,12 @@ namespace DataLayer.Services
                 }
 
                 //Проверяем шапку на соответствие порядку и содержнию заголовков
-                bool isCorrect = true;
                 for (int i = 0; i < heading.Count; i++)
                 {
-                    switch (i)
-                    {
-                        case 0:
-                            if (!heading[i].Equals(Settings.DATE))
-                                isCorrect = false;
-                            break;
-                        case 1:
-                            if (!heading[i].Equals(Settings.TIME))
-                                isCorrect = false;
-                            break;
-                        case 2:
-                            if (!heading[i].Equals(Settings.TEMPERATURE))
-                                isCorrect = false;
-                            break;
-                        case 3:
-                            if (!heading[i].Equals(Settings.HUMIDITY))
-                                isCorrect = false;
-                            break;
-                        case 4:
-                            if (!heading[i].Equals(Settings.DEW_POINT))
-                                isCorrect = false;
-                            break;
-                        case 5:
-                            if (!heading[i].Equals(Settings.PRESSURE))
-                                isCorrect = false;
-                            break;
-                        case 6:
-                            if (!heading[i].Equals(Settings.WIND_DIRECTION))
-                                isCorrect = false;
-                            break;
-                        case 7:
-                            if (!heading[i].Equals(Settings.WIND_SPEED))
-                                isCorrect = false;
-                            break;
-                        case 8:
-                            if (!heading[i].Equals(Settings.CLOUDINESS))
-                                isCorrect = false;
-                            break;
-                        case 9:
-                            if (!heading[i].Equals(Settings.CLOUD_BASE))
-                                isCorrect = false;
-                            break;
-                        case 10:
-                            if (!heading[i].Equals(Settings.HORIZONTAL_VISIBILITY))
-                                isCorrect = false;
-                            break;
-                        case 11:
-                            if (!heading[i].Equals(Settings.WEATHER_PHENOMENA))
-                                isCorrect = false;
-                            break;
-                        default:
-                            isCorrect = false;
-                            break;
-                    }
-
-                    if (!isCorrect)
-                    {
-                        return isCorrect;
-                    }
+                    if (!heading[i].Equals(settings.HeaderNames[i]))
+                        return false;
                 }
-                return isCorrect;
+                return true;
             }
             return false;
         }
@@ -157,7 +100,7 @@ namespace DataLayer.Services
 
                 if (currentRow != null)
                 {
-                    logger.Info("TRY PARSE ROW {0}" + row);
+                    logger.Info("TRY PARSE ROW {0}", row);
                     bool tryParse = true; int cellNum = 0;
 
                     decimal dec = 0M;
@@ -171,49 +114,119 @@ namespace DataLayer.Services
                             case 0:
                                 DateTime dateTime = new DateTime();
                                 tryParse = ParseDateTimeTypeCell(currentRow.GetCell(cellNum), currentRow.GetCell(++cellNum), ref dateTime);
-                                weather.Date = dateTime;
+                                if (tryParse)
+                                {
+                                    weather.Date = dateTime;
+                                }
+                                else
+                                {
+                                    logger.Error("Can't parse cells № {0} {1}", cellNum - 1, cellNum);
+                                }
                                 break;
                             case 2:
                                 tryParse = ParseDecimalTypeCell(currentRow.GetCell(cellNum), ref dec);
-                                weather.Temperature = dec;
+                                if (tryParse)
+                                {
+                                    weather.Temperature = dec;
+                                }
+                                else
+                                {
+                                    logger.Error("Can't parse cell № {0}", cellNum);
+                                }
                                 break;
                             case 3:
                                 tryParse = ParseDecimalTypeCell(currentRow.GetCell(cellNum), ref dec);
-                                weather.Humidity = sh;
+                                if (tryParse)
+                                {
+                                    weather.Humidity = dec;
+                                }
+                                else
+                                {
+                                    logger.Error("Can't parse cell № {0}", cellNum);
+                                }
                                 break;
                             case 4:
                                 tryParse = ParseDecimalTypeCell(currentRow.GetCell(cellNum), ref dec);
-                                weather.DewPoint = dec;
+                                if (tryParse)
+                                {
+                                    weather.DewPoint = dec;
+                                }
+                                else
+                                {
+                                    logger.Error("Can't parse cell № {0}", cellNum);
+                                }
                                 break;
                             case 5:
                                 tryParse = ParseShortTypeCell(currentRow.GetCell(cellNum), ref sh);
-                                weather.Pressure = sh;
+                                if (tryParse)
+                                {
+                                    weather.Pressure = sh;
+                                }
+                                else
+                                {
+                                    logger.Error("Can't parse cell № {0}", cellNum);
+                                }
                                 break;
                             case 6:
                                 sb.Clear();
                                 tryParse = ParseStringNullableTypeCell(currentRow.GetCell(cellNum), sb);
-                                weather.WindDirection = sb.ToString();
+                                if (tryParse)
+                                {
+                                    weather.WindDirection = sb.ToString();
+                                }
+                                else
+                                {
+                                    logger.Error("Can't parse cell № {0}", cellNum);
+                                }
                                 break;
                             case 7:
                                 tryParse = ParseShortNullableTypeCell(currentRow.GetCell(cellNum), ref shNull);
-                                weather.WindSpeed = sh;
+                                if (tryParse)
+                                {
+                                    weather.WindSpeed = shNull;
+                                }
+                                else
+                                {
+                                    logger.Error("Can't parse cell № {0}", cellNum);
+                                }
                                 break;
                             case 8:
                                 tryParse = ParseShortNullableTypeCell(currentRow.GetCell(cellNum), ref shNull);
-                                weather.Cloudiness = shNull;
+                                if (tryParse)
+                                {
+                                    weather.Cloudiness = shNull;
+                                }
+                                else
+                                {
+                                    logger.Error("Can't parse cell № {0}", cellNum);
+                                }
                                 break;
                             case 9:
                                 tryParse = ParseShortNullableTypeCell(currentRow.GetCell(cellNum), ref shNull);
-                                weather.CloudBase = shNull;
+                                if (tryParse)
+                                {
+                                    weather.CloudBase = shNull;
+                                }
+                                else
+                                {
+                                    logger.Error("Can't parse cell № {0}", cellNum);
+                                }
                                 break;
                             case 10:
                                 tryParse = ParseShortNullableTypeCell(currentRow.GetCell(cellNum), ref shNull);
-                                weather.HorizontalVisibility = shNull;
+                                if (tryParse)
+                                {
+                                    weather.HorizontalVisibility = shNull;
+                                }
+                                else
+                                {
+                                    logger.Error("Can't parse cell № {0}", cellNum);
+                                }
                                 break;
                             case 11:
                                 sb.Clear();
                                 tryParse = ParseStringNullableTypeCell(currentRow.GetCell(cellNum), sb);
-                                weather.WeatherPhenomena =  sb?.ToString();
+                                weather.WeatherPhenomena = sb?.ToString();
                                 break;
                             default:
                                 break;
@@ -237,9 +250,8 @@ namespace DataLayer.Services
 
         private bool ParseDateTimeTypeCell(ICell dateCell, ICell timeCell, ref DateTime item)
         {
-            if (dateCell == null)
+            if (dateCell == null || dateCell.ToString().Trim().Equals(""))
             {
-                logger.Error("Can't parse cell № {0}", dateCell.Address);
                 return false;
             }
             else
@@ -248,9 +260,8 @@ namespace DataLayer.Services
                 sb.Append(dateCell.ToString());
                 sb.Append(" ");
 
-                if (timeCell == null)
+                if (timeCell == null || timeCell.ToString().Trim().Equals(""))
                 {
-                    logger.Error("Can't parse cell № {0}", timeCell.Address);
                     return false;
                 }
                 else
@@ -263,56 +274,15 @@ namespace DataLayer.Services
                     }
                     catch (FormatException)
                     {
-                        logger.Error("Can't parse cell № {0} {1}", dateCell.Address, timeCell.Address);
                         return false;
                     }
                 }
             }
         }
 
-        private bool ParseShortTypeCell(ICell currentCell, ref short item)
-        {
-            if (currentCell == null)
-            {
-                logger.Error("Can't parse cell № " + currentCell.Address);
-                return false;
-            }
-            else
-            {
-                try
-                {
-                    item = short.Parse(currentCell.ToString());
-                    return true;
-                }
-                catch (FormatException)
-                {
-                    logger.Error("Can't parse cell № {0}", currentCell.Address);
-                    return false;
-                }
-            }
-        }
+        private bool ParseShortTypeCell(ICell currentCell, ref short item) => Parse<short>(currentCell, ref item);
 
-        private bool ParseDecimalTypeCell(ICell currentCell, ref decimal item)
-        {
-            if (currentCell == null)
-            {
-                logger.Error("Can't parse cell № {0}", currentCell.Address);
-                return false;
-            }
-            else
-            {
-                try
-                {
-                    item = decimal.Parse(currentCell.ToString());
-                    return true;
-                }
-                catch (FormatException)
-                {
-                    logger.Error("Can't parse cell № {0}", currentCell.Address);
-                    return false;
-                }
-            }
-        }
+        private bool ParseDecimalTypeCell(ICell currentCell, ref decimal item) => Parse<decimal>(currentCell, ref item);
 
         private bool ParseStringNullableTypeCell(ICell currentCell, StringBuilder item)
         {
@@ -343,12 +313,31 @@ namespace DataLayer.Services
                 }
                 catch (FormatException)
                 {
-                    logger.Error("Can't parse cell № {0}", currentCell.Address);
                     return false;
                 }
             }
         }
+
+        private bool Parse<T>(ICell currentCell, ref T item)
+        {
+            if (currentCell == null || currentCell.ToString().Trim().Equals(""))
+            {
+                return false;
+            }
+            else
+            {
+                try
+                {
+                    item = (T)Convert.ChangeType(currentCell.ToString(), typeof(T));
+                    return true;
+                }
+                catch (Exception)
+                {
+                    return false;
+                }
+                
+            }
+        }
     }
 }
-
 

@@ -87,7 +87,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Codes\ErrorCodes.cs" />
     <Compile Include="Codes\ErrorTextTemplates.cs" />
     <Compile Include="DBConnection\WeatherDBContext.cs" />
     <Compile Include="Entity\Weather.cs" />
@@ -108,6 +107,7 @@
       <DependentUpon>202008060846537_CloudBaseNullable.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Model\ExelParseResultModel.cs" />
     <Compile Include="Model\PageModel.cs" />
     <Compile Include="Model\WeatherModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

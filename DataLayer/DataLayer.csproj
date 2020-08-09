@@ -90,7 +90,6 @@
     <Compile Include="Codes\ErrorTextTemplates.cs" />
     <Compile Include="DBConnection\WeatherDBContext.cs" />
     <Compile Include="Entity\Weather.cs" />
-    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\ExelParseResultModel.cs" />
     <Compile Include="Model\PageModel.cs" />
     <Compile Include="Model\WeatherModel.cs" />

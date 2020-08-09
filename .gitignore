@@ -6,8 +6,6 @@ packages/
 /**/Scripts/*.js.map
 /**/Scripts/*.md
 /**/Scripts/*.js.flow
-/**/Scripts/*.d.ts
-
 
 /**/Scripts/umd/
 /**/Scripts/src/

@@ -26,7 +26,5 @@ packages/
 
 *.csproj.user
 
-*.sln
-
 Web.Debug.config
 Web.Release.config
